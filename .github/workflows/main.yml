@@ -13,16 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup Build Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
     
     - name: Build with Debug
-      run: make build-debug
-        
-    - name: Sign Debug Build
-      run: make sign-debug
+      run: go build -v -o ./build/app .
         
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
