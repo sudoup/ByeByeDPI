@@ -1,0 +1,32 @@
+name: Build with Debug Signature
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+    
+    - name: Build with Debug
+      run: make build-debug
+        
+    - name: Sign Debug Build
+      run: make sign-debug
+        
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-build
+        path: ./build/
+        retention-days: 30
